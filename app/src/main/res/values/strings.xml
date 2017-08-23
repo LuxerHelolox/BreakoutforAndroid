@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Breakout for Android</string>
+	<string name="hello_world">Próba alkalmazás.</string> 
+	<string name="say_bye">Mond hogy Pá!</string> 
+	<string name="say_bu">Mond hogy Bú!</string> 
+	<string name="bye">Pá!</string> 
+	<string name="bu">Bú</string>
+</resources>
