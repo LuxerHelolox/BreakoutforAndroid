@@ -1,30 +1,55 @@
 package com.example.laszlo.breakoutforandroid;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 
 import java.util.Random;
+
+import static java.lang.Math.abs;
 
 public class Ball {
     RectF rect;
     float xVelocity;
     float yVelocity;
-    float ballWidth = 10;
-    float ballHeight = 10;
+    int ballWidth;
+    int ballHeight;
 
-    public Ball(int screenX, int screenY){
+    private Bitmap bitmap;
+
+    public Ball(Context context, int screenX, int screenY, int ballWidth, int ballHeight){
 
         // Start the ball travelling straight up at 100 pixels per second
-        xVelocity = 200;
-        yVelocity = -400;
+        xVelocity = 400;
+        yVelocity = -800;
+
+        this.ballHeight = ballHeight;
+        this.ballWidth = ballWidth;
+
+        setRandomXVelocity();
 
         // Place the ball in the centre of the screen at the bottom
         // Make it a 10 pixel x 10 pixel square
         rect = new RectF();
 
+        // Initialize the bitmap
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ball);
+
+        // stretch the bitmap to a size appropriate for the screen resolution
+        bitmap = Bitmap.createScaledBitmap(bitmap,
+                (int) (ballWidth),
+                (int) (ballHeight),
+                false);
+
     }
 
     public RectF getRect(){
         return rect;
+    }
+
+    public Bitmap getBitmap(){
+        return bitmap;
     }
 
     public void update(long fps){
@@ -42,6 +67,14 @@ public class Ball {
         xVelocity = - xVelocity;
     }
 
+    public void negativeXVelocity(){
+        xVelocity = - abs(xVelocity);
+    }
+
+    public void positveXVelocity(){
+        xVelocity =  abs(xVelocity);
+    }
+
     public void setRandomXVelocity(){
         Random generator = new Random();
         int answer = generator.nextInt(2);
@@ -50,6 +83,7 @@ public class Ball {
             reverseXVelocity();
         }
     }
+
 
     public void clearObstacleY(float y){
         rect.bottom = y;
@@ -61,11 +95,14 @@ public class Ball {
         rect.right = x + ballWidth;
     }
 
-    public void reset(int x, int y){
-        rect.left = x / 2;
-        rect.top = y - 20;
-        rect.right = x / 2 + ballWidth;
-        rect.bottom = y - 20 - ballHeight;
+    public void reset(int X, int Y){
+        rect.left = X;
+        rect.top = Y - ballHeight;
+        rect.right = X + ballWidth;
+        rect.bottom = Y ;
     }
+
+
+
 
 }

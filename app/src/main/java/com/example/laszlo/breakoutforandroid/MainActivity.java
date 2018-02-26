@@ -25,4 +25,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /** Called when the user taps the Send button */
+    public void startMemoryGame(View view) {
+        // Do something in response to button
+        Intent intent = new Intent(this, MemoryGameActivity.class);
+        startActivity(intent);
+    }
+
 }

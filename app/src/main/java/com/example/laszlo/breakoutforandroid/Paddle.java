@@ -37,30 +37,36 @@ public class Paddle {
 
     private Bitmap bitmap;
 
+    private int screenX, screenY, paddleWidth, paddleHeight, paddleRow;
+
     // This the the constructor method
     // When we create an object from this class we will pass
     // in the screen width and height
-    public Paddle(Context context, int screenX, int screenY){
-        // 130 pixels wide and 20 pixels high
-        length = 130;
-        height = 20;
+    public Paddle(Context context, int screenX, int screenY, int paddleWidth, int paddleHeight,
+                  int paddleRow){
 
-        // Start paddle in roughly the sceen centre
-        x = screenX / 2;
-        y = screenY - 20;
 
-        rect = new RectF(x, y, x + length, y + height);
+        this.screenX = screenX;
+        this.screenY = screenY;
+
+        this.paddleWidth = paddleWidth;
+        this.paddleHeight = paddleHeight;
+        this.paddleRow = paddleRow;
+
+
+        rect = new RectF();
+        reset();
 
         // How fast is the paddle in pixels per second
-        paddleSpeed = 350;
+        paddleSpeed = 800;
 
         // Initialize the bitmap
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.paddle);
 
         // stretch the bitmap to a size appropriate for the screen resolution
         bitmap = Bitmap.createScaledBitmap(bitmap,
-                (int) (length),
-                (int) (height),
+                (int) (paddleWidth),
+                (int) (paddleHeight),
                 false);
 
     }
@@ -85,16 +91,27 @@ public class Paddle {
     // It determines if the paddle needs to move and changes the coordinates
     // contained in rect if necessary
     public void update(long fps){
-        if(paddleMoving == LEFT){
+        x = rect.left;
+        if(paddleMoving == LEFT && x > 0){
             x = x - paddleSpeed / fps;
+            if (x<0) x=0;
         }
 
-        if(paddleMoving == RIGHT){
+
+        if(paddleMoving == RIGHT && x < screenX-paddleWidth){
             x = x + paddleSpeed / fps;
+            if (x > screenX-paddleWidth) x = screenX-paddleWidth;
         }
 
         rect.left = x;
-        rect.right = x + length;
+        rect.right = x + paddleWidth;
+    }
+
+    public void reset(){
+        rect.left = screenX / 2-paddleWidth/2;
+        rect.top = screenY - paddleRow - paddleHeight;;
+        rect.right = screenX / 2 + paddleWidth/2;
+        rect.bottom = screenY - paddleRow ;
     }
 
 }
